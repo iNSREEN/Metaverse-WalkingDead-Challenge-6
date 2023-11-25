@@ -71,17 +71,31 @@ public class PlayerScript : MonoBehaviour
 
         Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
 
+        /*        if (direction.magnitude >= 0.1f)
+                {
+                    animator.SetBool("Idle", false);
+                    animator.SetBool("Walk", true);
+                    animator.SetBool("Running", false);
+                    animator.SetBool("RifleWalk", false);
+                    animator.SetBool("IdleAim", false);
+
+                    //------ Rotate charecter----------
+                    float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
+                    float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnCamVelocity, turnCalmTime);
+                    transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+                    //-------------------------------
+                    Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                    cC.Move(moveDirection.normalized * playerSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    // for idle enmation
+                    animator.SetBool("Idle", true);
+                    animator.SetBool("Walk", false);
+                    animator.SetBool("Running", false);
+                }*/
+
         if (direction.magnitude >= 0.1f)
-        {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnCamVelocity, turnCalmTime);
-            transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-
-            Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            cC.Move(moveDirection.normalized * playerSpeed * Time.deltaTime);
-        }
-
-       /* if (direction.magnitude >= 0.1f)
         {
             animator.SetBool("Idle", false);
             animator.SetBool("Walk", true);
@@ -105,21 +119,21 @@ public class PlayerScript : MonoBehaviour
             animator.SetBool("Idle", true);
             animator.SetBool("Walk", false);
             animator.SetBool("Running", false);
-        }*/
+        }
     }
     void Jump()
     {
         if (Input.GetButtonDown("Jump") && onSurface)
         {
-        /*    animator.SetBool("Idle", false);
-            animator.SetTrigger("Jump");*/
+            animator.SetBool("Idle", false);
+            animator.SetTrigger("Jump");
             velocity.y = Mathf.Sqrt(jumpRange * -2 * gravity);
         }
-/*        else
+        else
         {
             animator.SetBool("Idle", true);
             animator.ResetTrigger("Jump");
-        }*/
+        }
     }
 
     void Sprint()
@@ -132,8 +146,8 @@ public class PlayerScript : MonoBehaviour
             Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
             if (direction.magnitude >= 0.1f)
             {
- /*               animator.SetBool("Walk", false);
-                animator.SetBool("Running", true);*/
+                animator.SetBool("Walk", false);
+                animator.SetBool("Running", true);
 
                 //------ Rotate charecter----------
                 float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
@@ -144,11 +158,11 @@ public class PlayerScript : MonoBehaviour
 
                 cC.Move(moveDirection.normalized * playerSprint * Time.deltaTime);
             }
-/*            else
+            else
             {
                 animator.SetBool("Walk", true);
                 animator.SetBool("Running", false);
-            }*/
+            }
 
         }
     }
