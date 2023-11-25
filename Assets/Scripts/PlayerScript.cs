@@ -108,14 +108,15 @@ public class PlayerScript : MonoBehaviour
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnCamVelocity, turnCalmTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
-            //-------------------------------
+
+
             Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
             cC.Move(moveDirection.normalized * playerSpeed * Time.deltaTime);
         }
         else
         {
-            // for idle enmation
+            // for idle 
             animator.SetBool("Idle", true);
             animator.SetBool("Walk", false);
             animator.SetBool("Running", false);
