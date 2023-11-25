@@ -13,6 +13,7 @@ public class Rifle : MonoBehaviour
     private float nextTimeToShoot = 0f;
     public PlayerScript player; //refrance to playerscript
     public Transform hand;
+    public Animator animator;
 
     [Header("Rifle Ammiition and Shooting")]
     private int maxAmmunition = 32;
@@ -85,8 +86,33 @@ public class Rifle : MonoBehaviour
 
         if (Input.GetButton("Fire1") && Time.time >= nextTimeToShoot) //change from GetButtomdown to getbutton to shoot contenuace not single shot
         {
+            animator.SetBool("Fire", true);
+            animator.SetBool("Idle", false);
             nextTimeToShoot = Time.time + 1f / fireCharge;
             Shoot();
+        }
+        else if (Input.GetButton("Fire1") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            // if we are firing and also walking in same time set animation to FireWalk
+
+            animator.SetBool("Idle", false);
+            animator.SetBool("FireWalk", true);
+        }
+        else if (Input.GetButton("Fire2") && Input.GetButton("Fire1"))
+        {
+            //if we are firing and aiming
+
+            animator.SetBool("Idle", false);
+            animator.SetBool("IdleAim", true);
+            animator.SetBool("FireWalk", true);
+            animator.SetBool("Walk", true);
+            animator.SetBool("Reloading", false);
+        }
+        else
+        {
+            animator.SetBool("Fire", false);
+            animator.SetBool("Idle", true);
+            animator.SetBool("FireWalk", false);
         }
     }
 
@@ -100,12 +126,12 @@ public class Rifle : MonoBehaviour
         Debug.Log("Reloading...");
 
         //play reload animation
-      /*  animator.SetBool("Reloading", true);*/
+        animator.SetBool("Reloading", true);
 
         //play reload sound
         yield return new WaitForSeconds(reloadingTime);
 
-       /* animator.SetBool("Reloading", false);*/
+        animator.SetBool("Reloading", false);
         presentAmmunition = maxAmmunition;
         player.playerSpeed = 1.9f;
         player.playerSprint = 3;

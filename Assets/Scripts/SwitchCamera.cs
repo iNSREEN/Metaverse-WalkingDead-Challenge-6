@@ -12,8 +12,8 @@ public class SwitchCamera : MonoBehaviour
     public GameObject ThirdPersonCanvas;
 
 
-/*    [Header("Camera Animator")]
-    public Animator animator;*/
+    [Header("Camera Animator")]
+    public Animator animator;
 
 
     void Start()
@@ -25,19 +25,51 @@ public class SwitchCamera : MonoBehaviour
     private void Update()
 
     {
-        if (Input.GetButton("Fire2")) //Aiming position and walking
+        if (Input.GetButton("Fire2") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) //Aiming position and walking
         {
+            //if we are aiming and walking 
+
+            animator.SetBool("Idle", false);
+            animator.SetBool("IdleAim", true);
+            animator.SetBool("RifleWalk", true);
+            animator.SetBool("Walk", true);
+            //------------
 
             ThirdPersonCam.SetActive(false);
             ThirdPersonCanvas.SetActive(false);
-            AimCam.SetActive(true);
+
+            AimCam.SetActive(true); //Activate Aiming Camera
+            AimCanvas.SetActive(true);
+        }
+        else if (Input.GetButton("Fire2"))
+        {
+            //if we are Just Aiming 
+
+            animator.SetBool("Idle", false);
+            animator.SetBool("IdleAim", true);
+            animator.SetBool("RifleWalk", false);
+            animator.SetBool("Walk", false);
+            //-------------------------------
+
+            ThirdPersonCam.SetActive(false);
+            ThirdPersonCanvas.SetActive(false);
+
+            AimCam.SetActive(true); //Activate Aiming Camera
             AimCanvas.SetActive(true);
         }
         else
         {
+            // not aiming
+
+            animator.SetBool("Idle", true);
+            animator.SetBool("IdleAim", false);
+            animator.SetBool("RifleWalk", false);
+
+            //---------------------
 
             ThirdPersonCam.SetActive(true);  //Activate Third person Camera(not shooting or aiming)
             ThirdPersonCanvas.SetActive(true);
+
             AimCam.SetActive(false);
             AimCanvas.SetActive(false);
         }
