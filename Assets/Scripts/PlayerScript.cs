@@ -37,18 +37,18 @@ public class PlayerScript : MonoBehaviour
     public LayerMask surfaceMask;
 
 
-    /*    private void Start()
-        {
-            Cursor.lockState = CursorLockMode.Locked; //to lock mousei n the middle in the start of the game
-            presentHealth = playerHealth;
-            //Debug.Log("---------------Start PLayer SCript");
-            //Debug.Log(healthBar);
-            //Debug.Log(playerHealth);
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked; //to lock mousei n the middle in the start of the game
+/*        presentHealth = playerHealth;
+        //Debug.Log("---------------Start PLayer SCript");
+        //Debug.Log(healthBar);
+        //Debug.Log(playerHealth);
 
-            *//*   healthBar.GiveFullHealth(playerHealth);*//* // call other script to gave full value
-                                                           //Debug.Log("after Calling  Healthbar Script");
-                                                           //Debug.Log(playerHealth);
-        }*/
+        healthBar.GiveFullHealth(playerHealth); // call other script to gave full value
+                                                //Debug.Log("after Calling  Healthbar Script");
+                                                //Debug.Log(playerHealth);*/
+    }
     private void Update()
     {
         onSurface = Physics.CheckSphere(surfaceCheck.position, surfaceDistance, surfaceMask); //check if the player in the surface or air
