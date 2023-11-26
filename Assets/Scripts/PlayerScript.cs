@@ -12,13 +12,13 @@ public class PlayerScript : MonoBehaviour
     [Header("Player Health Things")]
     private float playerHealth = 120f;
     public float presentHealth;
-    public GameObject playerDamage;
+   /* public GameObject playerDamage;*/
     /*    public HealthBar healthBar;*/
 
 
     [Header("Player Script Camera")]
     public Transform playerCamera;
-    public GameObject EndGameMenuUI;
+   /* public GameObject EndGameMenuUI;*/
 
     [Header("Player Animation and Gravitiy")]
     public CharacterController cC;
@@ -40,14 +40,12 @@ public class PlayerScript : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; //to lock mousei n the middle in the start of the game
-/*        presentHealth = playerHealth;
-        //Debug.Log("---------------Start PLayer SCript");
-        //Debug.Log(healthBar);
-        //Debug.Log(playerHealth);
+        presentHealth = playerHealth;
 
-        healthBar.GiveFullHealth(playerHealth); // call other script to gave full value
+
+      /*  healthBar.GiveFullHealth(playerHealth);*/ // call other script to gave full value
                                                 //Debug.Log("after Calling  Healthbar Script");
-                                                //Debug.Log(playerHealth);*/
+                                                //Debug.Log(playerHealth);
     }
     private void Update()
     {
@@ -168,18 +166,10 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    /*public void playerHitDamage(float takeDamage)
+    public void playerHitDamage(float takeDamage)
     {
         presentHealth -= takeDamage;
-        StartCoroutine(PlayerDamage());
-
-        //Debug.Log("Inside  Damage script, Present Health before calling healthbar script" + presentHealth );
-
-
-        *//*healthBar.SetHealth(presentHealth);/* //update health slider
-                                            // Debug.Log("Present Health after calling healthbar script: " + presentHealth);
-                                            // Debug.Log("------------------");
-
+       //
         if (presentHealth <= 0)
         {
             PlayerDie();
@@ -188,20 +178,20 @@ public class PlayerScript : MonoBehaviour
 
     private void PlayerDie()
     {
-        EndGameMenuUI.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Object.Destroy(gameObject, 1.0f);
+
+        /*  EndGameMenuUI.SetActive(true);*/
+
     }
 
 
     // to show image blood when zombi hit player
-    IEnumerator PlayerDamage()
+/*    IEnumerator PlayerDamage()
     {
         playerDamage.SetActive(true);
         yield return new WaitForSeconds(0.2f); // change healthbar damage for player after 0.2 Sec
         playerDamage.SetActive(false);
-    }*//*
-
-    }*/
-
+    }
+*/
 }
