@@ -1,10 +1,10 @@
-using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Zombie : MonoBehaviour
+
+public class BossZombie : MonoBehaviour
 {
     [Header("Zombie Health and Damage")]
     private float zombiHealth = 100f;
@@ -18,11 +18,10 @@ public class Zombie : MonoBehaviour
     public Transform playerBody;
     public LayerMask PlayerLayer;
 
-    [Header("Zombie Gurding Varibles")]
-    public GameObject[] walkpoints;
-    int currentZombiePosition = 0;
+    [Header("Zombie Standing Varibles")]
+
     public float zombieSpeed;
-    float walkingPointRadius = 2;
+  
 
     [Header("Zombie Mood/States")]
     public float visionRadius;
@@ -50,43 +49,25 @@ public class Zombie : MonoBehaviour
         playerInVisionRadius = Physics.CheckSphere(transform.position, visionRadius, PlayerLayer);
         playerInAttackingRaduis = Physics.CheckSphere(transform.position, attackingRadius, PlayerLayer);
 
-        if (!playerInVisionRadius && !playerInAttackingRaduis) Guard();
+        if (!playerInVisionRadius && !playerInAttackingRaduis) Idle();
         if (playerInVisionRadius && !playerInAttackingRaduis) PursuePlayer();
         if (playerInVisionRadius && playerInAttackingRaduis) AttackPlayer();
     }
     // make pklayer wlak on deffrintspoints
-    private void Guard()
+    private void Idle()
     {
-        if (Vector3.Distance(walkpoints[currentZombiePosition].transform.position, transform.position) < walkingPointRadius)
-        {
-            currentZombiePosition = Random.Range(0, walkpoints.Length);
-            if (currentZombiePosition >= walkpoints.Length)
-            {
-                currentZombiePosition = 0;
-            }
-        }
-        transform.position = Vector3.MoveTowards(transform.position, walkpoints[currentZombiePosition].transform.position, Time.deltaTime * zombieSpeed);
-        //zombie facing - look player
-        transform.LookAt(walkpoints[currentZombiePosition].transform.position);
-
+        zombieAgent.SetDestination(transform.position);
+        anim.SetBool("Idle", true);
+        anim.SetBool("Running", false);
     }
 
     private void PursuePlayer()
     {
         if (zombieAgent.SetDestination(playerBody.position))
         {
-            //Animation
-            anim.SetBool("Walking", false);
+            anim.SetBool("Idle", false);
             anim.SetBool("Running", true);
             anim.SetBool("Attacking", false);
-            anim.SetBool("Died", false);
-        }
-        else
-        {
-            anim.SetBool("Walking", false);
-            anim.SetBool("Running", false);
-            anim.SetBool("Attacking", false);
-            anim.SetBool("Died", true);
         }
     }
 
@@ -101,20 +82,16 @@ public class Zombie : MonoBehaviour
             {
                 Debug.Log("Attacking..." + hitInfo.transform.name);
                 PlayerScript playerBody = hitInfo.transform.GetComponent<PlayerScript>();
-               /* Debug.Log(playerBody);*/
+                Debug.Log(playerBody);
 
                 if (playerBody != null)
                 {
                     playerBody.playerHitDamage(giveDamage);
                 }
 
-
-                anim.SetBool("Attacking", true);
-                anim.SetBool("Walking", false);
-                anim.SetBool("Running", false);
-                anim.SetBool("Died", false);
-
             }
+            anim.SetBool("Attacking", true);
+            anim.SetBool("Running", false);
             previouslyAttack = true;
             Invoke(nameof(ActiveAttacking), timeBtwAttack);
         }
@@ -131,9 +108,6 @@ public class Zombie : MonoBehaviour
         presentHealth -= takeDamage;
         if (presentHealth <= 0)
         {
-            anim.SetBool("Walking", false);
-            anim.SetBool("Running", false);
-            anim.SetBool("Attacking", false);
             anim.SetBool("Died", true);
 
             zombiDie();
@@ -151,6 +125,5 @@ public class Zombie : MonoBehaviour
         playerInAttackingRaduis = false;
         Object.Destroy(gameObject, 5.0f); //damage after 5 secound
     }
-
 
 }

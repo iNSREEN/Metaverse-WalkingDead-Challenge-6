@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour
     [Header("Player Health Things")]
     private float playerHealth = 120f;
     public float presentHealth;
-    /* public GameObject playerDamage;*/
+    public GameObject playerDamage;
     /*    public HealthBar healthBar;*/
 
 
@@ -140,7 +140,7 @@ public class PlayerScript : MonoBehaviour
     public void playerHitDamage(float takeDamage)
     {
         presentHealth -= takeDamage;
-
+        StartCoroutine(PlayerDamage());
         Debug.Log("player heatdamgae");
         if (presentHealth <= 0)
         {
@@ -150,9 +150,16 @@ public class PlayerScript : MonoBehaviour
  
     private void Die()
     {
-    
+      
         Cursor.lockState = CursorLockMode.None;
         Object.Destroy(gameObject, 1.0f);
         
+    }
+
+    IEnumerator PlayerDamage()
+    {
+        playerDamage.SetActive(true);
+        yield return new WaitForSeconds(0.2f); // change healthbar damage for player after 0.2 Sec
+        playerDamage.SetActive(false);
     }
 }

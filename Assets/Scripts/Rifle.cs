@@ -51,6 +51,7 @@ public class Rifle : MonoBehaviour
 
             ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>(); //from other script opjecttohit
             Zombie zombie = hitInfo.transform.GetComponent<Zombie>();
+            BossZombie boss = hitInfo.transform.GetComponent<BossZombie>();
             if (objectToHit != null)
             {
                 objectToHit.ObjectHitDamage(giveDamagOf);
@@ -60,6 +61,13 @@ public class Rifle : MonoBehaviour
             else if (zombie != null)
             {
                 zombie.zombiHitDamage(giveDamagOf);
+                GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));// it will show WoodGo effect whenever we recast
+                                                                                                                          //Instantiate method is used to create copies of objects at runtime
+                Destroy(goreEffectGo, 1f); //distroy after 1 sec                
+            }
+            else if (boss != null)
+            {
+                boss.zombiHitDamage(giveDamagOf);
                 GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));// it will show WoodGo effect whenever we recast
                                                                                                                           //Instantiate method is used to create copies of objects at runtime
                 Destroy(goreEffectGo, 1f); //distroy after 1 sec                
