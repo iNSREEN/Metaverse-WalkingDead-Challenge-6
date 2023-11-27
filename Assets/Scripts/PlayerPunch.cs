@@ -19,9 +19,8 @@ public class PlayerPunch : MonoBehaviour
         {
             Debug.Log(hitInfo.transform.name);//show name iof whatever hit
 
-            ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>(); //from other script opjecttohit
-            /*            Zombi1 zombi1 = hitInfo.transform.GetComponent<Zombi1>();
-                        Zombi2 zombi2 = hitInfo.transform.GetComponent<Zombi2>();*/
+            ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>(); 
+            Zombie zombie = hitInfo.transform.GetComponent<Zombie>();
 
             if (objectToHit != null) // shoot object 
             {
@@ -30,15 +29,10 @@ public class PlayerPunch : MonoBehaviour
                 Destroy(WoodGo, 1f);
 
             }
-            /*            else if (zombi1 != null)
-                        {
-                            zombi1.zombiHitDamage(giveDamageOf);
-                        }
-                        else if (zombi2 != null)
-                        {
-                            zombi2.zombiHitDamage(giveDamageOf);
-                        }*/
-
+            else if (zombie != null)
+            {
+                zombie.zombiHitDamage(giveDamageOf);
+            }
         }
     }
 }

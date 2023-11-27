@@ -1,20 +1,15 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-
-public class Zombie1 : MonoBehaviour
+public class Zombie : MonoBehaviour
 {
-
-
     [Header("Zombie Health and Damage")]
-/*    private float zombiHealth = 100f;
-    private float presentHealth;*/
-    public float giveDamage = 10f;
-/*    public HealthBar healthBar;*/
-
-
+    private float zombiHealth = 100f;
+    private float presentHealth;
+    public float giveDamage = 5f;
 
     [Header("Zombie Things")]
     public NavMeshAgent zombieAgent;
@@ -29,44 +24,37 @@ public class Zombie1 : MonoBehaviour
     public float zombieSpeed;
     float walkingPointRadius = 2;
 
-
-    [Header("Zombie Attacking VAraible")]
-    public float timeBtwAttack;
-    bool previousAttack;
-
-
-/*
-    [Header("Zombi Animation")]
-    public Animator anim;*/
-
-
     [Header("Zombie Mood/States")]
     public float visionRadius;
     public float attackingRadius;
     public bool playerInVisionRadius;
     public bool playerInAttackingRaduis;
 
+    [Header("Zombie Attacking VAraible")]
+    public float timeBtwAttack;
+    bool previouslyAttack;
+
+
+    [Header("Zombi Animation")]
+    public Animator anim;
+
 
     private void Awake()
     {
-        /*        presentHealth = zombiHealth;
-                healthBar.GiveFullHealth(zombiHealth);*/
+        presentHealth = zombiHealth;
         zombieAgent = GetComponent<NavMeshAgent>();
     }
+
     private void Update()
     {
         playerInVisionRadius = Physics.CheckSphere(transform.position, visionRadius, PlayerLayer);
         playerInAttackingRaduis = Physics.CheckSphere(transform.position, attackingRadius, PlayerLayer);
 
-        //if player not in attach or radios area keep garding the area 
         if (!playerInVisionRadius && !playerInAttackingRaduis) Guard();
-
-        //if player in good vision area and not in the attacking radius follow player
         if (playerInVisionRadius && !playerInAttackingRaduis) PursuePlayer();
-
-        // if player in vision area and in the attacking area then will attack
         if (playerInVisionRadius && playerInAttackingRaduis) AttackPlayer();
     }
+    // make pklayer wlak on deffrintspoints
     private void Guard()
     {
         if (Vector3.Distance(walkpoints[currentZombiePosition].transform.position, transform.position) < walkingPointRadius)
@@ -78,16 +66,17 @@ public class Zombie1 : MonoBehaviour
             }
         }
         transform.position = Vector3.MoveTowards(transform.position, walkpoints[currentZombiePosition].transform.position, Time.deltaTime * zombieSpeed);
-        //change zombie facing
+        //zombie facing - look player
         transform.LookAt(walkpoints[currentZombiePosition].transform.position);
 
     }
 
+
+
+
     private void PursuePlayer()
     {
-
-        zombieAgent.SetDestination(playerBody.position);
-  /*      if (zombieAgent.SetDestination(playerBody.position))
+        if (zombieAgent.SetDestination(playerBody.position))
         {
             //Animation
             anim.SetBool("Walking", false);
@@ -101,59 +90,70 @@ public class Zombie1 : MonoBehaviour
             anim.SetBool("Running", false);
             anim.SetBool("Attacking", false);
             anim.SetBool("Died", true);
-        }*/
-
+        }
     }
 
     private void AttackPlayer()
     {
-        zombieAgent.SetDestination(transform.position); // stop zombu at one point at the attack radiuse 
-        transform.LookAt(LookPoint); // make zomibi look at player 
-                                     //check if the zombie didnt previusly attack
-        if (!previousAttack)
+        zombieAgent.SetDestination(transform.position);
+        transform.LookAt(LookPoint);
+        if (!previouslyAttack)
         {
             RaycastHit hitInfo;
-            //check if the recast move in the forword direction and revice information about object hit and restrict the ray by reduace
             if (Physics.Raycast(attaackingRayCastArea.transform.position, attaackingRayCastArea.transform.forward, out hitInfo, attackingRadius))
             {
-                Debug.Log("attacking XXXXXX: " + hitInfo.transform.name);
+                Debug.Log("Attacking..." + hitInfo.transform.name);
+                PlayerScript playerBody = hitInfo.transform.GetComponent<PlayerScript>();
+                Debug.Log(playerBody);
+
+                if (playerBody != null)
+                {
+                    playerBody.playerHitDamage(giveDamage);
+                }
+
+
+                anim.SetBool("Attacking", true);
+                anim.SetBool("Walking", false);
+                anim.SetBool("Running", false);
+                anim.SetBool("Died", false);
 
             }
-            previousAttack = true;
-            Invoke(nameof(ActiveAttacking), timeBtwAttack); //wait before attacking with timebteAttack secound
+            previouslyAttack = true;
+            Invoke(nameof(ActiveAttacking), timeBtwAttack);
         }
+
     }
     private void ActiveAttacking()
     {
+        previouslyAttack = false;
+    }
 
-        previousAttack = false;
+
+    public void zombiHitDamage(float takeDamage)
+    {
+        presentHealth -= takeDamage;
+        if (presentHealth <= 0)
+        {
+            anim.SetBool("Walking", false);
+            anim.SetBool("Running", false);
+            anim.SetBool("Attacking", false);
+            anim.SetBool("Died", true);
+
+            zombiDie();
+        }
 
     }
 
-    /* public void zombiHitDamage(float takeDamage)
-     {
-         presentHealth -= takeDamage;
-         healthBar.SetHealth(presentHealth);
+    private void zombiDie()
+    {
+        zombieAgent.SetDestination(transform.position);
+        zombieSpeed = 0f;
+        attackingRadius = 0f;
+        visionRadius = 0f;
+        playerInVisionRadius = false;
+        playerInAttackingRaduis = false;
+        Object.Destroy(gameObject, 5.0f); //damage after 5 secound
+    }
 
-         if (presentHealth <= 0)
-         {
-             anim.SetBool("Walking", false);
-             anim.SetBool("Running", false);
-             anim.SetBool("Attacking", false);
-             anim.SetBool("Died", true);
 
-             zombiDie();
-         }
-     }
- */
-    /*  private void zombiDie()
-      {
-          zombieAgent.SetDestination(transform.position);
-          zombieSpeed = 0f;
-          attackingRadius = 0f;
-          visionRadius = 0f;
-          playerInVisionRadius = false;
-          playerInAttackingRaduis = false;
-          Object.Destroy(gameObject, 5.0f); //damage after 5 secound
-      }*/
 }

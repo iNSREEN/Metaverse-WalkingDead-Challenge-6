@@ -26,7 +26,7 @@ public class Rifle : MonoBehaviour
     [Header("Rifle Effects")]
     public ParticleSystem muzzleSpark;
     public GameObject WoodedEffect;
- /*   public GameObject goreEffect; //blood effect*/
+    public GameObject goreEffect; //blood effect
 
 
     private void Shoot()
@@ -50,12 +50,19 @@ public class Rifle : MonoBehaviour
             Debug.Log(hitInfo.transform.name);
 
             ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>(); //from other script opjecttohit
-
+            Zombie zombie = hitInfo.transform.GetComponent<Zombie>();
             if (objectToHit != null)
             {
                 objectToHit.ObjectHitDamage(giveDamagOf);
                 GameObject WoodGo = Instantiate(WoodedEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));// it will show WoodGo effect whenever we recast
                 Destroy(WoodGo, 1f);
+            }
+            else if (zombie != null)
+            {
+                zombie.zombiHitDamage(giveDamagOf);
+                GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));// it will show WoodGo effect whenever we recast
+                                                                                                                          //Instantiate method is used to create copies of objects at runtime
+                Destroy(goreEffectGo, 1f); //distroy after 1 sec                
             }
         }
     }

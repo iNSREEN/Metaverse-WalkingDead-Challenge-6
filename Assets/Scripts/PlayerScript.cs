@@ -12,7 +12,7 @@ public class PlayerScript : MonoBehaviour
     [Header("Player Health Things")]
     private float playerHealth = 120f;
     public float presentHealth;
-   /* public GameObject playerDamage;*/
+    /* public GameObject playerDamage;*/
     /*    public HealthBar healthBar;*/
 
 
@@ -39,17 +39,12 @@ public class PlayerScript : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; //to lock mousei n the middle in the start of the game
+        Cursor.lockState = CursorLockMode.Locked;
         presentHealth = playerHealth;
-
-
-      /*  healthBar.GiveFullHealth(playerHealth);*/ // call other script to gave full value
-                                                //Debug.Log("after Calling  Healthbar Script");
-                                                //Debug.Log(playerHealth);
     }
     private void Update()
     {
-        onSurface = Physics.CheckSphere(surfaceCheck.position, surfaceDistance, surfaceMask); //check if the player in the surface or air
+        onSurface = Physics.CheckSphere(surfaceCheck.position, surfaceDistance, surfaceMask); 
         if (onSurface && velocity.y < 0)
         {
             velocity.y = -2f;
@@ -68,30 +63,6 @@ public class PlayerScript : MonoBehaviour
         float vertical_axis = Input.GetAxisRaw("Vertical"); //up down
 
         Vector3 direction = new Vector3(horizontal_axis, 0f, vertical_axis).normalized;
-
-        /*        if (direction.magnitude >= 0.1f)
-                {
-                    animator.SetBool("Idle", false);
-                    animator.SetBool("Walk", true);
-                    animator.SetBool("Running", false);
-                    animator.SetBool("RifleWalk", false);
-                    animator.SetBool("IdleAim", false);
-
-                    //------ Rotate charecter----------
-                    float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + playerCamera.eulerAngles.y;
-                    float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnCamVelocity, turnCalmTime);
-                    transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
-                    //-------------------------------
-                    Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-                    cC.Move(moveDirection.normalized * playerSpeed * Time.deltaTime);
-                }
-                else
-                {
-                    // for idle enmation
-                    animator.SetBool("Idle", true);
-                    animator.SetBool("Walk", false);
-                    animator.SetBool("Running", false);
-                }*/
 
         if (direction.magnitude >= 0.1f)
         {
@@ -162,36 +133,26 @@ public class PlayerScript : MonoBehaviour
                 animator.SetBool("Walk", true);
                 animator.SetBool("Running", false);
             }
-
+            
         }
     }
 
     public void playerHitDamage(float takeDamage)
     {
         presentHealth -= takeDamage;
-       //
+
+        Debug.Log("player heatdamgae");
         if (presentHealth <= 0)
         {
-            PlayerDie();
+           Die();
         }
     }
-
-    private void PlayerDie()
+ 
+    private void Die()
     {
+    
         Cursor.lockState = CursorLockMode.None;
         Object.Destroy(gameObject, 1.0f);
-
-        /*  EndGameMenuUI.SetActive(true);*/
-
+        
     }
-
-
-    // to show image blood when zombi hit player
-/*    IEnumerator PlayerDamage()
-    {
-        playerDamage.SetActive(true);
-        yield return new WaitForSeconds(0.2f); // change healthbar damage for player after 0.2 Sec
-        playerDamage.SetActive(false);
-    }
-*/
 }
