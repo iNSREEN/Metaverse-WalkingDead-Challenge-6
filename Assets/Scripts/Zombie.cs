@@ -71,9 +71,6 @@ public class Zombie : MonoBehaviour
 
     }
 
-
-
-
     private void PursuePlayer()
     {
         if (zombieAgent.SetDestination(playerBody.position))
