@@ -51,8 +51,8 @@ public class Zombie : MonoBehaviour
         playerInAttackingRaduis = Physics.CheckSphere(transform.position, attackingRadius, PlayerLayer);
 
         if (!playerInVisionRadius && !playerInAttackingRaduis) Guard();
-/*        if (playerInVisionRadius && !playerInAttackingRaduis) PursuePlayer();
-*/        if (playerInVisionRadius && playerInAttackingRaduis) AttackPlayer();
+        if (playerInVisionRadius && !playerInAttackingRaduis) PursuePlayer();
+        if (playerInVisionRadius && playerInAttackingRaduis) AttackPlayer();
     }
     // make pklayer wlak on deffrintspoints
     private void Guard()

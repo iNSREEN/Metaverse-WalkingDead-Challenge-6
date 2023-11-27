@@ -8,7 +8,7 @@ public class RifilePickup : MonoBehaviour
     public GameObject PlayerRifile;
     public GameObject PickupRifile;
     public PlayerPunch playerPunch;
-/*    public GameObject RifleUI;*/
+/*    public GameObject rifleUI;*/
 
     [Header("Rifile Assign Things")]
     public PlayerScript player;
@@ -23,7 +23,7 @@ public class RifilePickup : MonoBehaviour
     private void Awake()
     {
         PlayerRifile.SetActive(false);
-    /*    RifleUI.SetActive(false);*/
+/*        rifleUI.SetActive(false);*/
     }
 
     private void Update()
