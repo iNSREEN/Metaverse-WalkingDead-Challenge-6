@@ -37,6 +37,12 @@ public class BossZombie : MonoBehaviour
     [Header("Zombi Animation")]
     public Animator anim;
 
+    [Header("Rifle Audio ")]
+
+    /*  public AudioSource ZombieWlak;*/
+    public AudioSource ZombieScreeem;
+    public AudioSource Zombiedie;
+
 
     private void Awake()
     {
@@ -65,6 +71,7 @@ public class BossZombie : MonoBehaviour
     {
         if (zombieAgent.SetDestination(playerBody.position))
         {
+            ZombieScreeem.Play();
             anim.SetBool("Idle", false);
             anim.SetBool("Running", true);
             anim.SetBool("Attacking", false);
@@ -123,6 +130,7 @@ public class BossZombie : MonoBehaviour
         visionRadius = 0f;
         playerInVisionRadius = false;
         playerInAttackingRaduis = false;
+        Zombiedie.Play();
         Object.Destroy(gameObject, 5.0f); //damage after 5 secound
     }
 

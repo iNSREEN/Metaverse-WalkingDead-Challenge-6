@@ -17,7 +17,11 @@ public class RifilePickup : MonoBehaviour
     private float nextTimeToPunch = 0f;
     public float punchCharge = 15f;
 
+    [Header("Rifle Audio ")]
 
+    /*  public AudioSource ZombieWlak;*/
+    public AudioSource PickUp;
+ 
 
 
     private void Awake()
@@ -47,7 +51,9 @@ public class RifilePickup : MonoBehaviour
         if (Vector3.Distance(transform.position, player.transform.position) < redius)
         {
             if (Input.GetKeyDown("f"))
+
             {
+                PickUp.Play();
                 PlayerRifile.SetActive(true);
                 PickupRifile.SetActive(false);
                 //sound

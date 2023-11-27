@@ -24,15 +24,16 @@ public class followPlayer : MonoBehaviour
     void Update()
     {
         playerInVisionRadius = Physics.CheckSphere(transform.position, visionRadius, PlayerLayer);
-     
-        if (playerInVisionRadius)
-        {
 
-            agent.SetDestination(playerBody.position);
-            anim.SetBool("SeePlayer", true);
-        }
+        /*        if (playerInVisionRadius)
+                {
 
-        
+                    agent.SetDestination(playerBody.position);
+                    anim.SetBool("SeePlayer", true);
+                }*/
+
+        agent.SetDestination(playerBody.position);
+        anim.SetBool("SeePlayer", true);
     }
 
 
