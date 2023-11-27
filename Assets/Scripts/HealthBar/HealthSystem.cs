@@ -1,18 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class HealthSystem : MonoBehaviour
+
+[Serializable]
+public class HealthSystem
 {
-    // Start is called before the first frame update
-    void Start()
+    public float healthPoints;
+    public float maxHealth;
+
+
+    public HealthSystem(int maxHealth)
     {
-        
+        this.maxHealth = maxHealth;
+        healthPoints = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+    public float gethealth() { return healthPoints; }
+    public float gethealthpercentage() { return healthPoints / maxHealth; }
+
+    public void Damage(int damageAmount)
     {
-        
+        healthPoints -= damageAmount;
+        if (healthPoints <= 0) { healthPoints = 0; }
+    }
+
+    public void heal(int healAmount)
+    {
+        healthPoints += healAmount;
+        if (healthPoints > maxHealth) { healthPoints = maxHealth; }
     }
 }
