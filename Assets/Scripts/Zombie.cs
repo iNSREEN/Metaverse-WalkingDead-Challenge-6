@@ -39,6 +39,12 @@ public class Zombie : MonoBehaviour
     public Animator anim;
 
 
+    [Header("Rifle Audio ")]
+    public AudioSource ZombieDamge;
+  /*  public AudioSource ZombieWlak;*/
+    public AudioSource ZombieRun;
+    public AudioSource Zombiedie;
+
     private void Awake()
     {
         presentHealth = zombiHealth;
@@ -51,7 +57,11 @@ public class Zombie : MonoBehaviour
         playerInAttackingRaduis = Physics.CheckSphere(transform.position, attackingRadius, PlayerLayer);
 
         if (!playerInVisionRadius && !playerInAttackingRaduis) Guard();
-        if (playerInVisionRadius && !playerInAttackingRaduis) PursuePlayer();
+        if (playerInVisionRadius && !playerInAttackingRaduis)
+        {
+            ZombieRun.Play();
+            PursuePlayer();
+        }
         if (playerInVisionRadius && playerInAttackingRaduis) AttackPlayer();
     }
     // make pklayer wlak on deffrintspoints
@@ -76,6 +86,7 @@ public class Zombie : MonoBehaviour
         if (zombieAgent.SetDestination(playerBody.position))
         {
             //Animation
+       /*     ZombieRun.Play();*/
             anim.SetBool("Walking", false);
             anim.SetBool("Running", true);
             anim.SetBool("Attacking", false);
@@ -131,6 +142,7 @@ public class Zombie : MonoBehaviour
         presentHealth -= takeDamage;
         if (presentHealth <= 0)
         {
+            ZombieDamge.Play();
             anim.SetBool("Walking", false);
             anim.SetBool("Running", false);
             anim.SetBool("Attacking", false);
@@ -143,12 +155,14 @@ public class Zombie : MonoBehaviour
 
     private void zombiDie()
     {
+        
         zombieAgent.SetDestination(transform.position);
         zombieSpeed = 0f;
         attackingRadius = 0f;
         visionRadius = 0f;
         playerInVisionRadius = false;
         playerInAttackingRaduis = false;
+        Zombiedie.Play();
         Object.Destroy(gameObject, 5.0f); //damage after 5 secound
     }
 

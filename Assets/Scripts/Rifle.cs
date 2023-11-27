@@ -31,6 +31,12 @@ public class Rifle : MonoBehaviour
     public GameObject WoodedEffect;
     public GameObject goreEffect; //blood effect
 
+    [Header("Rifle Audio ")]
+    public AudioSource RifleShoot;
+    public AudioSource RifleRelod;
+    public AudioSource ZombieDamge;
+
+
     private void Awake()
     {
         transform.SetParent(hand); //assign rifile parent to hand later will add multiple rifile
@@ -57,9 +63,10 @@ public class Rifle : MonoBehaviour
         else if (Input.GetButton("Fire1") && Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             // if we are firing and also walking in same time set animation to FireWalk
-
+        
             animator.SetBool("Idle", false);
             animator.SetBool("FireWalk", true);
+         
         }
         else if (Input.GetButton("Fire2") && Input.GetButton("Fire1"))
         {
@@ -111,12 +118,16 @@ public class Rifle : MonoBehaviour
             BossZombie boss = hitInfo.transform.GetComponent<BossZombie>();
             if (objectToHit != null)
             {
+                RifleShoot.Play();
+                ZombieDamge.Play();
                 objectToHit.ObjectHitDamage(giveDamagOf);
                 GameObject WoodGo = Instantiate(WoodedEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));// it will show WoodGo effect whenever we recast
                 Destroy(WoodGo, 1f);
             }
             else if (zombie != null)
             {
+                RifleShoot.Play();
+                ZombieDamge.Play();
                 zombie.zombiHitDamage(giveDamagOf);
                 GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));// it will show WoodGo effect whenever we recast
                                                                                                                           //Instantiate method is used to create copies of objects at runtime
@@ -124,6 +135,8 @@ public class Rifle : MonoBehaviour
             }
             else if (boss != null)
             {
+                RifleShoot.Play();
+                ZombieDamge.Play();
                 boss.zombiHitDamage(giveDamagOf);
                 GameObject goreEffectGo = Instantiate(goreEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));// it will show WoodGo effect whenever we recast
                                                                                                                           //Instantiate method is used to create copies of objects at runtime
@@ -140,6 +153,7 @@ public class Rifle : MonoBehaviour
         Debug.Log("Reloading...");
 
         //play reload animation
+        RifleRelod.Play();
         animator.SetBool("Reloading", true);
 
         //play reload sound
