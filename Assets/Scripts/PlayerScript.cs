@@ -156,10 +156,20 @@ public class PlayerScript : MonoBehaviour
         
     }
 
-/*    IEnumerator PlayerDamage()
+    /*    IEnumerator PlayerDamage()
+        {
+            playerDamage.SetActive(true);
+            yield return new WaitForSeconds(0.2f); // change healthbar damage for player after 0.2 Sec
+            playerDamage.SetActive(false);
+        }*/
+
+
+
+    private void OnCollisionEnter(Collision collision)
     {
-        playerDamage.SetActive(true);
-        yield return new WaitForSeconds(0.2f); // change healthbar damage for player after 0.2 Sec
-        playerDamage.SetActive(false);
-    }*/
+        if (collision.gameObject.tag == "Aixi")
+        {
+            Destroy(collision.gameObject);
+        }
+    }
 }

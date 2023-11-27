@@ -40,7 +40,7 @@ public class Zombie : MonoBehaviour
 
 
     [Header("Rifle Audio ")]
-    public AudioSource ZombieDamge;
+
   /*  public AudioSource ZombieWlak;*/
     public AudioSource ZombieRun;
     public AudioSource Zombiedie;
@@ -142,7 +142,7 @@ public class Zombie : MonoBehaviour
         presentHealth -= takeDamage;
         if (presentHealth <= 0)
         {
-            ZombieDamge.Play();
+          
             anim.SetBool("Walking", false);
             anim.SetBool("Running", false);
             anim.SetBool("Attacking", false);
