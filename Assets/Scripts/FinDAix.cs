@@ -18,11 +18,11 @@ public class FinDAix : MonoBehaviour
        
         if (other.gameObject.CompareTag("Aixi"))
         {
-            Debug.Log("Aixi collided with: " + other.gameObject.name);
-            Debug.Log("Aixi collided!");
-            other.gameObject.SetActive(false);
             collectAudio.Play();
+            other.gameObject.SetActive(false);
+       
 
         }
+
     }
 }

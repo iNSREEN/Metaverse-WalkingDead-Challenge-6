@@ -10,30 +10,30 @@ public class followPlayer : MonoBehaviour
     public LayerMask PlayerLayer;
     public Transform playerBody;
 
-    [Header("Zombie Mood/States")]
+    [Header("Zombie mode")]
     public float visionRadius;
     public bool playerInVisionRadius;
   
-    // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         playerInVisionRadius = Physics.CheckSphere(transform.position, visionRadius, PlayerLayer);
 
-        /*        if (playerInVisionRadius)
-                {
+        if (playerInVisionRadius)
+        {
 
-                    agent.SetDestination(playerBody.position);
-                    anim.SetBool("SeePlayer", true);
-                }*/
+            agent.SetDestination(playerBody.position);
+      
 
-        agent.SetDestination(playerBody.position);
-        anim.SetBool("SeePlayer", true);
+        }
+        anim.SetBool("SeePlayer", playerInVisionRadius);
+
+
     }
 
 
