@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -171,5 +172,20 @@ public class PlayerScript : MonoBehaviour
         {
             Destroy(collision.gameObject);
         }
+
+/*        if (collision.gameObject.tag == "Zombie")
+        {
+
+            Debug.Log("Zombie Damge player");
+
+        }*/
     }
+/*    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Zombie")
+        {
+
+            Debug.Log("Zombie Damge player");
+        }
+    }*/
 }
