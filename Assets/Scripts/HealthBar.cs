@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+ using UnityEngine.UI;
 
 
 public class HealthBar : MonoBehaviour
@@ -16,7 +16,7 @@ public class HealthBar : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Zombie"))
         {
-            Debug.Log("Zombie Damge player");
+            Debug.Log("Zombie Damge player -- HealthBarScript");
             animZombie.SetBool("Attacing", true);
             damgeAudio.Play();
             Blood--;

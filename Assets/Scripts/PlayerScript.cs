@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using Unity.UI;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class PlayerScript : MonoBehaviour
 {
     [Header("Player Movment")]
@@ -13,7 +15,7 @@ public class PlayerScript : MonoBehaviour
     [Header("Player Health Things")]
     private float playerHealth = 120f;
     public float presentHealth;
-    /*public GameObject playerDamage;*/
+    public GameObject playerDamage;
     /*    public HealthBar healthBar;*/
 
 
@@ -37,11 +39,21 @@ public class PlayerScript : MonoBehaviour
     public float surfaceDistance = 0.4f;
     public LayerMask surfaceMask;
 
+    [Header("HelthBar")]
+    [SerializeField]
+    private Image healthBarImage;
+    public AudioSource damgeAudio;
+    private int Blood = 10;  // Assuming 3 is the maximum health
+    public Animator animZombie;
+    public AudioSource collectAudio;
+
+
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         presentHealth = playerHealth;
+        playerDamage.SetActive(false);
     }
     private void Update()
     {
@@ -157,35 +169,96 @@ public class PlayerScript : MonoBehaviour
         
     }
 
-    /*    IEnumerator PlayerDamage()
-        {
-            playerDamage.SetActive(true);
-            yield return new WaitForSeconds(0.2f); // change healthbar damage for player after 0.2 Sec
-            playerDamage.SetActive(false);
-        }*/
+ 
 
 
 
-    private void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Aixi")
+
+        if (other.gameObject.CompareTag("Aixi"))
         {
-            Destroy(collision.gameObject);
+         /*   collectAudio.Play();*/
+            other.gameObject.SetActive(false);
+            Blood++;
+            healthBarImage.fillAmount = (float)Blood * 10;
         }
 
-/*        if (collision.gameObject.tag == "Zombie")
+        /*        if (other.gameObject.CompareTag("Zombie"))
+                {
+                    Debug.Log("Zombie Damge player -- Health PlayerScript");
+                    damgeAudio.Play();
+                    PlayerDamage();
+                    *//*      Blood -= 5;*//*
+                    Blood--;
+                    StartCoroutine(PlayerDamage());
+
+                    // Update the fillAmount of the health bar image
+                    healthBarImage.fillAmount = (float)Blood / 10;
+
+                    if (Blood == 0)
+                    {
+                        SceneManager.LoadScene("Loss");
+                    }
+                }
+
+                if (other.gameObject.CompareTag("Boss"))
+                {
+                    damgeAudio.Play();
+                    PlayerDamage();
+                    *//* Blood -=20;*//*
+
+                    Blood -= 4;
+                    StartCoroutine(PlayerDamage());
+
+
+                    // Update the fillAmount of the health bar image
+                    healthBarImage.fillAmount = (float)Blood /10;
+
+                    if (Blood == 0)
+                    {
+                        SceneManager.LoadScene("Loss");
+                    }
+                }*/
+
+        if (other.gameObject.CompareTag("Zombie") || other.gameObject.CompareTag("Boss"))
         {
+        
+            damgeAudio.Play();
+            PlayerDamage();
 
-            Debug.Log("Zombie Damge player");
+            // Adjust damage based on the enemy type
+            int damageAmount = (other.gameObject.CompareTag("Zombie")) ? 1 : 4;
+            Blood -= damageAmount;
+            StartCoroutine(PlayerDamage());
 
-        }*/
+            // Update the fillAmount of the health bar image
+            healthBarImage.fillAmount = (float)Blood / 10;
+
+            if (Blood == 0)
+            {
+                LoadSceneByNumber(5);
+            }
+        }
+
+        if (other.gameObject.CompareTag("win"))
+        {
+            LoadSceneByNumber(4);
+        }
+
     }
-/*    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag == "Zombie")
-        {
 
-            Debug.Log("Zombie Damge player");
-        }
-    }*/
+    IEnumerator PlayerDamage()
+    {
+        playerDamage.SetActive(true);
+        yield return new WaitForSeconds(0.4f); // change healthbar damage for player after 0.2 Sec
+        playerDamage.SetActive(false);
+    }
+
+
+    void LoadSceneByNumber(int sceneNumber)
+    {
+        // Use SceneManager to load the scene by number
+        SceneManager.LoadScene(sceneNumber);
+    }
 }
